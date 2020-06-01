@@ -14,13 +14,11 @@ class runtime_Stage:
         self._vars = dict(self.my_vars)
         self._lists = dict(self.my_lists)
 
-    @asyncio.coroutine
-    def wait(self, time):
+    async def wait(self, time):
         "Waits for times seconds"
         yield from asyncio.sleep(time)
 
-    @asyncio.coroutine
-    def ask(self, question):
+    async def ask(self, question):
         "Asks question"
         print("{} asks '{}'".format(self.__class__.__name__, question))
         self._answer = input()
@@ -118,22 +116,18 @@ def convert_to_num(n):
                 return 0, False
 
 class runtime_Sprite(runtime_Stage):
-    @asyncio.coroutine
-    def sayfor(self, thing, time):
+    async def sayfor(self, thing, time):
         "Says thing for time seconds"
         print("{} says '{}'".format(self.__class__.__name__, thing))
         yield from asyncio.sleep(time)
-    @asyncio.coroutine
-    def say(self, thing):
+    async def say(self, thing):
         "Says thing"
         print("{} says '{}'".format(self.__class__.__name__, thing))
-    @asyncio.coroutine
-    def thinkfor(self, thing, time):
+    async def thinkfor(self, thing, time):
         "Thinks thing for time seconds"
         print("{} thinks '{}'".format(self.__class__.__name__, thing))
         yield from asyncio.sleep(time)
-    @asyncio.coroutine
-    def think(self, thing):
+    async def think(self, thing):
         "Thinks thing"
         print("{} thinks '{}'".format(self.__class__.__name__, thing))
 

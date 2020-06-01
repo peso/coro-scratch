@@ -113,11 +113,9 @@ class {}(runtime_{}):
     my_vars = {}
     my_lists = {}
 {}"""
-    gf_template = """@asyncio.coroutine
-def greenflag{}(self):
+    gf_template = """async def greenflag{}(self):
 {}"""
-    custom_template = """@asyncio.coroutine
-def {}(self, {}):
+    custom_template = """async def {}(self, {}):
 {}"""
     funcs = []
     greenflags = 0
