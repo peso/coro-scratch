@@ -79,7 +79,7 @@ def indent(amount, code):
 def sprites_to_py(objects, name):
     "Converts the sprites to a .py file"
     header = """#! usr/bin/env python3
-# -*- coding: utf-8 -*-
+# -*- coding: latin-1 -*-
 # {}
 
 import asyncio, random
