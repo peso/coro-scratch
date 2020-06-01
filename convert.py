@@ -50,7 +50,7 @@ def get_stage_and_sprites(json):
     sprites = []
     for child in json.children:
         if hasattr(child, "objName"):
-            name = child.objName
+            name = child.objName.replace(" ","_").replace("!","_").replace("-","_").replace("ø","oe")
             scripts = []
             for script in getattr(child, "scripts", []):
                 script = script[2]
