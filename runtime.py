@@ -16,7 +16,7 @@ class runtime_Stage:
 
     async def wait(self, time):
         "Waits for times seconds"
-        yield from asyncio.sleep(time)
+        await asyncio.sleep(time)
 
     async def ask(self, question):
         "Asks question"
@@ -119,14 +119,14 @@ class runtime_Sprite(runtime_Stage):
     async def sayfor(self, thing, time):
         "Says thing for time seconds"
         print("{} says '{}'".format(self.__class__.__name__, thing))
-        yield from asyncio.sleep(time)
+        await asyncio.sleep(time)
     async def say(self, thing):
         "Says thing"
         print("{} says '{}'".format(self.__class__.__name__, thing))
     async def thinkfor(self, thing, time):
         "Thinks thing for time seconds"
         print("{} thinks '{}'".format(self.__class__.__name__, thing))
-        yield from asyncio.sleep(time)
+        await asyncio.sleep(time)
     async def think(self, thing):
         "Thinks thing"
         print("{} thinks '{}'".format(self.__class__.__name__, thing))
