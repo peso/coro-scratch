@@ -76,6 +76,9 @@ def get_stage_and_sprites(json):
 def indent(amount, code):
     return "\n".join(" "*amount + line for line in code.split("\n"))
 
+# Register of missing features in transpiler
+unknown_block_names = set()
+
 def sprites_to_py(objects, name):
     "Converts the sprites to a .py file"
     header = """#! usr/bin/env python3
@@ -104,6 +107,9 @@ main()"""
     header += "\n{}\n".format(open("runtime.py").read())
     converted_stage = convert_object("Stage", stage)
     converted_sprites = [convert_object("Sprite", sprite) for sprite in sprites]
+    if len(unknown_block_names) > 0:
+        print('This file uses the following unsupported block names:\n{}'.format('\n'.join(['    {}'.format(name) for name in sorted(list(unknown_block_names))])))
+        exit(1)
     return header + "{}\n\n".format(converted_stage) + '\n\n'.join(converted_sprites) + footer
 
 def convert_object(type_, sprite):
@@ -137,6 +143,7 @@ class {}(runtime_{}):
                                  indent(4, ("\n\n".join(funcs) if funcs else "pass")))
 
 def convert_blocks(blocks):
+    global unknown_block_errors
     lines = []
     for block in blocks:
         if block.name == "say:duration:elapsed:from:":
@@ -190,12 +197,15 @@ def convert_blocks(blocks):
         elif block.name == "setLine:ofList:to:":
             lines.append("self.replace_thing_in_list({}, {}, {})".format(
                                                      *map(convert_reporters, block.args)))
+        else:
+            unknown_block_names.add(block.name)
     if lines:
         return "\n".join(lines)
     else:
         return "pass"
 
 def convert_reporters(block):
+    global unknown_block_names
     if isinstance(block, (str, int, float, bool)):
         return repr(block)
     elif block.name in ("+", "-", "*", "/", "%"):
@@ -234,6 +244,8 @@ def convert_reporters(block):
         return "self.item_of_list({}, {})".format(*map(convert_reporters, block.args))
     elif block.name == "randomFrom:to:":
         return "pick_random({}, {})".format(*map(convert_reporters, block.args))
+    else:
+        unknown_block_names.add(block.name)
 
 def transpile(in_, out):
     "Transpiles the .sb2 file found at in_ into a .py which is then written to out"
