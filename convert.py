@@ -152,15 +152,15 @@ def convert_blocks(blocks):
         elif block.name == "doAsk":
             lines.append("await self.ask({})".format(*map(convert_reporters, block.args)))
         elif block.name == "doForever":
-            lines.append("while True:\n{}\n    yield".format(indent(4, convert_blocks(block.args[0]))))
+            lines.append("while True:\n{}\n    await asyncio.sleep(0)".format(indent(4, convert_blocks(block.args[0]))))
         elif block.name == "doRepeat":
-            lines.append("for _ in range({}):\n{}\n    yield".format(convert_reporters(block.args[0]),
+            lines.append("for _ in range({}):\n{}\n    await asyncio.sleep(0)".format(convert_reporters(block.args[0]),
                                                           indent(4, convert_blocks(block.args[1]))))
         elif block.name == "doUntil":
-            lines.append("while not {}:\n{}\n    yield".format(convert_reporters(block.args[0]),
+            lines.append("while not {}:\n{}\n    await asyncio.sleep(0)".format(convert_reporters(block.args[0]),
                                                           indent(4, convert_blocks(block.args[1]))))
         elif block.name == "doWaitUntil":
-            lines.append("while not {}:\n    yield".format(convert_reporters(block.args[0])))
+            lines.append("while not {}:\n    await asyncio.sleep(0)".format(convert_reporters(block.args[0])))
         elif block.name == "setVar:to:":
             lines.append("self.set_var({}, {})".format(*map(convert_reporters, block.args)))
         elif block.name == "changeVar:by:":
