@@ -140,17 +140,17 @@ def convert_blocks(blocks):
     lines = []
     for block in blocks:
         if block.name == "say:duration:elapsed:from:":
-            lines.append("yield from self.sayfor({}, {})".format(*map(convert_reporters, block.args)))
+            lines.append("await self.sayfor({}, {})".format(*map(convert_reporters, block.args)))
         elif block.name == "say:":
-            lines.append("yield from self.say({})".format(*map(convert_reporters, block.args)))
+            lines.append("await self.say({})".format(*map(convert_reporters, block.args)))
         elif block.name == "think:duration:elapsed:from:":
-            lines.append("yield from self.thinkfor({}, {})".format(*map(convert_reporters, block.args)))
+            lines.append("await self.thinkfor({}, {})".format(*map(convert_reporters, block.args)))
         elif block.name == "think:":
-            lines.append("yield from self.think({})".format(*map(convert_reporters, block.args)))
+            lines.append("await self.think({})".format(*map(convert_reporters, block.args)))
         elif block.name == "wait:elapsed:from":
-            lines.append("yield from self.wait({})".format(*map(convert_reporters, block.args)))
+            lines.append("await self.wait({})".format(*map(convert_reporters, block.args)))
         elif block.name == "doAsk":
-            lines.append("yield from self.ask({})".format(*map(convert_reporters, block.args)))
+            lines.append("await self.ask({})".format(*map(convert_reporters, block.args)))
         elif block.name == "doForever":
             lines.append("while True:\n{}\n    yield".format(indent(4, convert_blocks(block.args[0]))))
         elif block.name == "doRepeat":
@@ -168,7 +168,7 @@ def convert_blocks(blocks):
         elif block.name == "call":
             func = block.args[0].replace("%", "").replace(" ", "_")
             args = ", ".join(map(convert_reporters, block.args[1:]))
-            lines.append("yield from self.{}({})".format(func, args))
+            lines.append("await self.{}({})".format(func, args))
         elif block.name == "doIfElse":
             pred = convert_reporters(block.args[0])
             if_clause, else_clause = map(convert_blocks, block.args[1:])
