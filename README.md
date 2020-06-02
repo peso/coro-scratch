@@ -1,7 +1,7 @@
 # coro-scratch
 A Scratch 2.0 to Python transpiler that makes extensive use of coroutines
 
-coro-scratch is a simple command line tool that can convert Scratch projects to .py source files that can be run in any Python version greater than or equal to 3.4. It makes extensive use of asyncio and coroutines in the transpiled files.
+coro-scratch is a simple command line tool that can convert Scratch projects to .py source files that can be run in any Python version greater than or equal to 3.8. It makes extensive use of asyncio and coroutines in the transpiled files.
 
 # What versions of Scratch does this work with?
 coro-scratch only works with Scratch 2.0 projects as the file formats for 1.4 and 3.0 are very different. Adding support for Scratch 3.0 projects would not be very difficult, but I do not have any plans to do so at the moment. If anyone wants to add it fork this repo and send a PR. :)
@@ -19,7 +19,7 @@ Also, the programs created by coro-scratch are CLI only, no graphics or sound bl
 # Usage
 Clone this repo, and run `python3 convert.py infile.sb2 outfile.py`
 
-The generated programs must be run on Python3.4+
+The generated programs must be run on Python3.8+
 
 # License
 coro-scratch is released under the MIT license, see LICENSE.txt for details.
