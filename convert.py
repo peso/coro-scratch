@@ -154,7 +154,8 @@ def convert_blocks(blocks):
             lines.append("await self.thinkfor({}, {})".format(*map(convert_reporters, block.args)))
         elif block.name == "think:":
             lines.append("await self.think({})".format(*map(convert_reporters, block.args)))
-        elif block.name == "wait:elapsed:from":
+        elif (block.name == "wait:elapsed:from"
+        or    block.name == "wait:elapsed:from:"):
             lines.append("await self.wait({})".format(*map(convert_reporters, block.args)))
         elif block.name == "doAsk":
             lines.append("await self.ask({})".format(*map(convert_reporters, block.args)))
