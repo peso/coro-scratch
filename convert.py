@@ -109,7 +109,6 @@ main()"""
     converted_sprites = [convert_object("Sprite", sprite) for sprite in sprites]
     if len(unknown_block_names) > 0:
         print('This file uses the following unsupported block names:\n{}'.format('\n'.join(['    {}'.format(name) for name in sorted(list(unknown_block_names))])))
-        exit(1)
     return header + "{}\n\n".format(converted_stage) + '\n\n'.join(converted_sprites) + footer
 
 def convert_object(type_, sprite):
@@ -198,7 +197,12 @@ def convert_blocks(blocks):
         elif block.name == "setLine:ofList:to:":
             lines.append("self.replace_thing_in_list({}, {}, {})".format(
                                                      *map(convert_reporters, block.args)))
+        #
+        #  Error handling
+        #
         else:
+            lines.append("UNKNOWN_block_{}({})".format(
+                block.name, ', '.join(map(convert_reporters, block.args)) ))
             unknown_block_names.add(block.name)
     if lines:
         return "\n".join(lines)
@@ -245,8 +249,12 @@ def convert_reporters(block):
         return "self.item_of_list({}, {})".format(*map(convert_reporters, block.args))
     elif block.name == "randomFrom:to:":
         return "pick_random({}, {})".format(*map(convert_reporters, block.args))
+    #
+    #  Unsupported features
+    #
     else:
         unknown_block_names.add(block.name)
+        return "UNKNOWN_reporter_{}({})".format(block.name.replace(':','_'), ', '.join(map(convert_reporters, block.args) ))
 
 def transpile(in_, out):
     "Transpiles the .sb2 file found at in_ into a .py which is then written to out"
