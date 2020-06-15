@@ -135,6 +135,8 @@ class {}(runtime_{}):
             args = ", ".join("{}={}".format(name, default) for (name, default) in args)
             body = indent(4, convert_blocks(blocks))
             funcs.append(custom_template.format(block_name, args, body))
+        else:
+            print(f'Unknown hat "{hat.name}"')
     return class_template.format(sprite.name,
                                  type_,
                                  repr([tuple(v) for v in sprite.vars]),
