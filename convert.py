@@ -86,6 +86,7 @@ def sprites_to_py(objects, name):
 # {}
 
 import asyncio, random
+import pygame
 
 loop = asyncio.get_event_loop()
 """.format(name)
@@ -199,6 +200,11 @@ def convert_blocks(blocks):
         elif block.name == "setLine:ofList:to:":
             lines.append("self.replace_thing_in_list({}, {}, {})".format(
                                                      *map(convert_reporters, block.args)))
+        #
+        #  Sound
+        #
+        elif block.name == "playSound:":
+            lines.append("self.play_sound({})".format(*map(convert_reporters, block.args)))
         #
         #  Error handling
         #

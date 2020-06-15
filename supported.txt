@@ -8,6 +8,12 @@ think [] for () secs
 
 think []
 
+
+# Sound
+
+play sound [sound v]
+
+
 ask [] and wait
 
 wait () secs

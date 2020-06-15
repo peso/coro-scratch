@@ -152,3 +152,13 @@ def pick_random(a, b):
         return random.uniform(a, b)
     else:
         return random.randint(a, b)
+
+#
+#  Audio
+#
+
+loaded_sounds = {}
+def play_sound(filename):
+    if not filename in loaded_sounds:
+        loaded_sounds[filename] = pygame.mixer.Sound(filename)
+    loaded_sound[filename].play()
