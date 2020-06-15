@@ -167,8 +167,14 @@ def convert_blocks(blocks):
             lines.append("for _ in range({}):\n{}\n    await asyncio.sleep(0)".format(convert_reporters(block.args[0]),
                                                           indent(4, convert_blocks(block.args[1]))))
         elif block.name == "doUntil":
-            lines.append("while not {}:\n{}\n    await asyncio.sleep(0)".format(convert_reporters(block.args[0]),
-                                                          indent(4, convert_blocks(block.args[1]))))
+            body = block.args[1]
+            cond = Block("not", [block.args[0]])
+            # Optimize: eliminate "not not" expression
+            if cond.name == "not" and isinstance(cond.args[0], Block) and cond.args[0].name == "not":
+                cond = cond.args[0].args[0]
+            lines.append("while {}:\n{}\n    await asyncio.sleep(0)".format(
+                convert_reporters(cond),
+                indent(4, convert_blocks(body)) ))
         elif block.name == "doWaitUntil":
             lines.append("while not {}:\n    await asyncio.sleep(0)".format(convert_reporters(block.args[0])))
         elif block.name == "setVar:to:":
