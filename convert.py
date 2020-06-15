@@ -131,6 +131,8 @@ def convert_object(type_, sprite):
 class {}(runtime_{}):
     my_vars = {}
     my_lists = {}
+    my_sounds = {}
+    my_costumes = {}
 {}"""
     gf_template = """async def greenflag{}(self):
 {}"""
@@ -155,6 +157,8 @@ class {}(runtime_{}):
                                  type_,
                                  repr([tuple(v) for v in sprite.vars]),
                                  repr([tuple(l) for l in sprite.lists]),
+                                 repr([tuple(s) for s in sprite.sounds]),
+                                 repr([tuple(c) for c in sprite.costumes]),
                                  indent(4, ("\n\n".join(funcs) if funcs else "pass")))
 
 def convert_blocks(blocks):
