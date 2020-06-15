@@ -162,3 +162,6 @@ def play_sound(filename):
     if not filename in loaded_sounds:
         loaded_sounds[filename] = pygame.mixer.Sound(filename)
     loaded_sound[filename].play()
+
+def stop_all_sounds():
+    pygame.mixer.stop()

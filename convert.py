@@ -205,6 +205,8 @@ def convert_blocks(blocks):
         #
         elif block.name == "playSound:":
             lines.append("self.play_sound({})".format(*map(convert_reporters, block.args)))
+        elif block.name == "stopAllSounds":
+            lines.append("stop_all_sounds()")
         #
         #  Error handling
         #

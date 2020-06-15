@@ -13,6 +13,8 @@ think []
 
 play sound [sound v]
 
+stop all sounds
+
 
 ask [] and wait
 
