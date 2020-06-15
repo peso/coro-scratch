@@ -1,5 +1,5 @@
 # convert.py
-# converts a .sb2 into a .py
+# converts a .sb2 into a .py - the .sb2 file is still needed for resources
 
 import zipfile, tokenize, collections
 import json as json_
@@ -23,7 +23,9 @@ class JSON_Wrap:
         except KeyError:
             raise AttributeError
 
-Sprite = collections.namedtuple("Sprite", "name scripts vars lists")
+Sprite = collections.namedtuple("Sprite", "name scripts vars lists costumes sounds")
+Sound = collections.namedtuple("Sound", "name resource")
+Costume = collections.namedtuple("Costume", "name resource cx cy layer")
 Block = collections.namedtuple("Block", "name args")
 Variable = collections.namedtuple("Variable", "name val")
 List = collections.namedtuple("List", "name contents")
@@ -64,14 +66,25 @@ def get_stage_and_sprites(json):
                     scripts.append([convert(block) for block in script])
             vars = [Variable(var.name, var.value) for var in getattr(child, "variables", [])]
             lists = [List(l.listName, l.contents) for l in getattr(child, "lists", [])]
-            sprites.append(Sprite(name, scripts, vars, lists))
+            costumes = [Costume(c.costumeName, c.baseLayerMD5,
+                c.rotationCenterX, c.rotationCenterY, c.baseLayerID) 
+                for c in getattr(child, "costumes", []) ]
+            sounds = [Sound(s.soundName, s.md5)
+                for s in getattr(child, "sounds", []) ]
+            sprites.append(Sprite(name, scripts, vars, lists, costumes, sounds))
     scripts = []
     for script in getattr(json, "scripts", []):
         script = script[2]
         scripts.append([convert(block) for block in script])
     vars = [Variable(var.name, var.value) for var in getattr(json, "variables", [])]
     lists = [List(l.listName, l.contents) for l in getattr(json, "lists", [])]
-    return Sprite("Stage", scripts, vars, lists), sprites
+    costumes = [Costume(c.costumeName, c.baseLayerMD5,
+                c.rotationCenterX, c.rotationCenterY, c.baseLayerID) 
+                for c in getattr(json, "costumes", []) ]
+    sounds =  [Sound(s.soundName, s.md5)
+                for s in getattr(json, "sounds", []) ]
+    stage = Sprite("Stage", scripts, vars, lists, costumes, sounds)
+    return stage, sprites
 
 def indent(amount, code):
     return "\n".join(" "*amount + line for line in code.split("\n"))
