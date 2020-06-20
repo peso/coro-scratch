@@ -14,10 +14,6 @@ class runtime_Stage:
         self._vars = dict(self.my_vars)
         self._lists = dict(self.my_lists)
 
-    async def wait(self, time):
-        "Waits for times seconds"
-        await asyncio.sleep(time)
-
     async def ask(self, question):
         "Asks question"
         print("{} asks '{}'".format(self.__class__.__name__, question))
