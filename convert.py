@@ -72,6 +72,13 @@ def get_stage_and_sprites(json):
             sounds = [Sound(s.soundName, s.md5)
                 for s in getattr(child, "sounds", []) ]
             sprites.append(Sprite(name, scripts, vars, lists, costumes, sounds))
+        elif hasattr(child, "cmd"):
+            print(f'Ignore cmd {child.cmd}{child.target}.{child.param}')
+        elif hasattr(child, "listName"):
+            print(f'Ignore list {child.listName}: {child.contents}')
+        else:
+            print('---- Unknown block ----------------------------------------')
+            print(child)
     scripts = []
     for script in getattr(json, "scripts", []):
         script = script[2]
