@@ -23,7 +23,7 @@ class JSON_Wrap:
         except KeyError:
             raise AttributeError
 
-Sprite = collections.namedtuple("Sprite", "name scripts vars lists costumes sounds")
+Sprite = collections.namedtuple("Sprite", "name attr scripts vars lists costumes sounds")
 Sound = collections.namedtuple("Sound", "name resource")
 Costume = collections.namedtuple("Costume", "name resource cx cy layer")
 Block = collections.namedtuple("Block", "name args")
@@ -53,6 +53,11 @@ def get_stage_and_sprites(json):
     for child in json.children:
         if hasattr(child, "objName"):
             name = child.objName.replace(" ","_").replace("!","_").replace("-","_").replace("ø","oe")
+            attr_names = "objName currentCostumeIndex scratchX scratchY scale direction rotationStyle isDraggable indexInLibrary visible".split(' ')
+            attrs = {}
+            for a in attr_names:
+                attrs[a] = getattr(child, a, None)
+
             scripts = []
             for script in getattr(child, "scripts", []):
                 script = script[2]
@@ -71,7 +76,7 @@ def get_stage_and_sprites(json):
                 for c in getattr(child, "costumes", []) ]
             sounds = [Sound(s.soundName, s.md5)
                 for s in getattr(child, "sounds", []) ]
-            sprites.append(Sprite(name, scripts, vars, lists, costumes, sounds))
+            sprites.append(Sprite(name, attrs, scripts, vars, lists, costumes, sounds))
         elif hasattr(child, "cmd"):
             print(f'Ignore cmd {child.cmd}{child.target}.{child.param}')
         elif hasattr(child, "listName"):
@@ -79,6 +84,11 @@ def get_stage_and_sprites(json):
         else:
             print('---- Unknown block ----------------------------------------')
             print(child)
+    # Stage
+    attr_names = "objName currentCostumeIndex penLayerMD5 penLayerID tempoBPM videoAlpha".split(' ')
+    attrs = {}
+    for a in attr_names:
+        attrs[a] = getattr(json, a, None)
     scripts = []
     for script in getattr(json, "scripts", []):
         script = script[2]
@@ -90,7 +100,7 @@ def get_stage_and_sprites(json):
                 for c in getattr(json, "costumes", []) ]
     sounds =  [Sound(s.soundName, s.md5)
                 for s in getattr(json, "sounds", []) ]
-    stage = Sprite("Stage", scripts, vars, lists, costumes, sounds)
+    stage = Sprite("Stage", attrs, scripts, vars, lists, costumes, sounds)
     return stage, sprites
 
 def indent(amount, code):
@@ -140,6 +150,7 @@ class {}(runtime_{}):
     my_lists = {}
     my_sounds = {}
     my_costumes = {}
+    my_attr = {}
 {}"""
     gf_template = """async def greenflag{}(self):
 {}"""
@@ -166,6 +177,7 @@ class {}(runtime_{}):
                                  repr([tuple(l) for l in sprite.lists]),
                                  repr([tuple(s) for s in sprite.sounds]),
                                  repr([tuple(c) for c in sprite.costumes]),
+                                 repr(sprite.attr),
                                  indent(4, ("\n\n".join(funcs) if funcs else "pass")))
 
 def convert_blocks(blocks):
