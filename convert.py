@@ -302,6 +302,12 @@ def convert_reporters(block):
     elif block.name == "randomFrom:to:":
         return "pick_random({}, {})".format(*map(convert_reporters, block.args))
     #
+    #  Sensing
+    #
+    elif block.name == "keyPressed:":
+        return "key_pressed({})".format(*map(convert_reporters, block.args))
+    
+    #
     #  Unsupported features
     #
     else:

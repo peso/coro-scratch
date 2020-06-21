@@ -1,4 +1,3 @@
-when gf clicked
 
 say [] for () secs
 
@@ -17,6 +16,14 @@ stop all sounds
 
 
 ask [] and wait
+
+
+# Events
+
+when gf clicked
+
+when [key v] key pressed
+
 
 wait () secs
 

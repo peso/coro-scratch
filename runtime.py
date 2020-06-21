@@ -1,6 +1,29 @@
 runtime_greenflags = []
 runtime_sprites = []
 
+#
+#  Events
+#
+
+key_dictionary = {
+    "backspace" : pygame.K_BACKSPACE,
+    "return" : pygame.K_RETURN,
+    "escape" : pygame.K_ESCAPE,
+    "space" : pygame.K_SPACE,
+    "up arrow" : pygame.K_UP,
+    "down arrow" : pygame.K_DOWN,
+    "right arrow" : pygame.K_RIGHT,
+    "left arrow" : pygame.K_LEFT,
+}
+
+def key_pressed(key):
+    if pygame.key.get_pressed()[key_dictionary[key]]: return True
+    else: return False
+
+#
+#  Stage and Sprite base classes
+#
+
 def create_sprite(cls):
     sprite = cls()
     runtime_sprites.append(sprite)
