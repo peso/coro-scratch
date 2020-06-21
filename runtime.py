@@ -111,22 +111,6 @@ def convert_to_num(n):
             except ValueError:
                 return 0, False
 
-class runtime_Sprite(runtime_Stage):
-    async def sayfor(self, thing, time):
-        "Says thing for time seconds"
-        print("{} says '{}'".format(self.__class__.__name__, thing))
-        await asyncio.sleep(time)
-    async def say(self, thing):
-        "Says thing"
-        print("{} says '{}'".format(self.__class__.__name__, thing))
-    async def thinkfor(self, thing, time):
-        "Thinks thing for time seconds"
-        print("{} thinks '{}'".format(self.__class__.__name__, thing))
-        await asyncio.sleep(time)
-    async def think(self, thing):
-        "Thinks thing"
-        print("{} thinks '{}'".format(self.__class__.__name__, thing))
-
 def convert_and_run_math(op, a, b):
     num_a, _ = convert_to_num(a)
     num_b, _ = convert_to_num(b)
@@ -161,3 +145,19 @@ def play_sound(filename):
 
 def stop_all_sounds():
     pygame.mixer.stop()
+
+class runtime_Sprite(runtime_Stage):
+    async def sayfor(self, thing, time):
+        "Says thing for time seconds"
+        print("{} says '{}'".format(self.__class__.__name__, thing))
+        await asyncio.sleep(time)
+    async def say(self, thing):
+        "Says thing"
+        print("{} says '{}'".format(self.__class__.__name__, thing))
+    async def thinkfor(self, thing, time):
+        "Thinks thing for time seconds"
+        print("{} thinks '{}'".format(self.__class__.__name__, thing))
+        await asyncio.sleep(time)
+    async def think(self, thing):
+        "Thinks thing"
+        print("{} thinks '{}'".format(self.__class__.__name__, thing))
