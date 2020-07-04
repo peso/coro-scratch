@@ -24,6 +24,10 @@ when gf clicked
 
 when [key v] key pressed
 
+when I receive [event v]
+
+broadcast [event v]
+
 
 wait () secs
 

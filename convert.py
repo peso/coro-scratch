@@ -158,17 +158,25 @@ class {}(runtime_{}):
 {}"""
     funcs = []
     greenflags = 0
+    slots = 0
     for script in sprite.scripts:
         hat, *blocks = script
         if hat.name == "whenGreenFlag":
             greenflags += 1
             funcs.append(gf_template.format(greenflags, indent(4, convert_blocks(blocks))))
-        if hat.name == "procDef":
+        elif hat.name == "procDef":
             block_name = hat.args.name.replace("%", "").replace(" ", "_")
             args = list(zip(hat.args.args, hat.args.defaults))
             args = ", ".join("{}={}".format(name, default) for (name, default) in args)
             body = indent(4, convert_blocks(blocks))
             funcs.append(custom_template.format(block_name, args, body))
+        elif hat.name == "whenIReceive":
+            event_name = hat.args[0]
+            slots += 1
+            func_name = f"slot{slots}"
+            func_body = indent(4, convert_blocks(blocks))
+            func_def = f'@on_broadcast("{event_name}")\nasync def {func_name}(self):\n{func_body}'
+            funcs.append(func_def)
         else:
             print(f'Unknown hat "{hat.name}"')
     return class_template.format(sprite.name,
@@ -242,6 +250,11 @@ def convert_blocks(blocks):
         elif block.name == "setLine:ofList:to:":
             lines.append("self.replace_thing_in_list({}, {}, {})".format(
                                                      *map(convert_reporters, block.args)))
+        #
+        #  Event
+        #
+        elif block.name == "broadcast:":
+            lines.append("broadcast({})".format(*map(convert_reporters, block.args)))
         #
         #  Sound
         #

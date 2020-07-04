@@ -2,6 +2,33 @@ runtime_greenflags = []
 runtime_sprites = []
 
 #
+#  Broadcast mechanism
+#
+
+event_listener = {}
+
+def add_listener(event_name, fn):
+    '''Register a callback for the specified event'''
+    if not event_name in event_listener:
+        event_listener[event_name] = []
+    event_listener[event_name].append(fn)
+
+def broadcast(event_name):
+    '''Signal all functions that wait for the event'''
+    if not event_name in event_listener:
+        return
+    for fn in event_listener[event_name]:
+        asyncio.create_task(fn())
+
+def on_broadcast(event_name):
+    '''Method decorator that trigger function when event occurs'''
+    def decorator(fn):
+        # custom attribute, picked up by create_sprite
+        fn.trigger_event = event_name
+        return fn
+    return decorator
+
+#
 #  Events
 #
 
@@ -25,9 +52,17 @@ def key_pressed(key):
 #
 
 def create_sprite(cls):
+    """Class decorator that registers the sprite - every Scratch sprite is a singleton"""
     sprite = cls()
     runtime_sprites.append(sprite)
     runtime_greenflags.extend(sprite._greenflags)
+
+    # Set up callbacks for methods marked with on_broadcast
+    for name, method in cls.__dict__.items():
+        if hasattr(method, "trigger_event"):
+            def singleton_fn():
+                return method(sprite)
+            add_listener(method.trigger_event, singleton_fn)
 
 class runtime_Stage:
     def __init__(self):
