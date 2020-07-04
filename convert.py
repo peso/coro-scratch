@@ -1,5 +1,4 @@
-# convert.py
-# converts a .sb2 into a .py - the .sb2 file is still needed for resources
+# Convert a .sb2 into a .py - the .sb2 file is still needed for resources
 
 import zipfile, tokenize, collections
 import json as json_
@@ -189,6 +188,7 @@ class {}(runtime_{}):
                                  indent(4, ("\n\n".join(funcs) if funcs else "pass")))
 
 def convert_blocks(blocks):
+    '''Convert blocks that do not return a value'''
     global unknown_block_errors
     lines = []
     for block in blocks:
@@ -275,6 +275,7 @@ def convert_blocks(blocks):
         return "pass"
 
 def convert_reporters(block):
+    ''' Reporters are blocks that return a value '''
     global unknown_block_names
     if isinstance(block, (str, int, float, bool)):
         return repr(block)
