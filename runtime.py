@@ -1,4 +1,4 @@
-runtime_greenflags = []
+GREENFLAG = '\x11' # ASCII XON
 runtime_sprites = []
 
 #

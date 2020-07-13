@@ -123,7 +123,8 @@ loop = asyncio.get_event_loop()
     footer = """
 
 def main():
-    tasks = [asyncio.ensure_future(script()) for script in runtime_greenflags]
+    broadcast(GREENFLAG)
+    tasks = asyncio.all_tasks()
     loop.run_until_complete(asyncio.gather(*tasks))
     loop.close()
 
@@ -151,8 +152,6 @@ class {}(runtime_{}):
     my_costumes = {}
     my_attr = {}
 {}"""
-    gf_template = """async def greenflag{}(self):
-{}"""
     custom_template = """async def {}(self, {}):
 {}"""
     funcs = []
@@ -162,7 +161,10 @@ class {}(runtime_{}):
         hat, *blocks = script
         if hat.name == "whenGreenFlag":
             greenflags += 1
-            funcs.append(gf_template.format(greenflags, indent(4, convert_blocks(blocks))))
+            func_name = f"greenflag{greenflags}"
+            func_body = indent(4, convert_blocks(blocks))
+            func_def = f'@on_broadcast(GREENFLAG)\nasync def {func_name}(self):\n{func_body}'
+            funcs.append(func_def)
         elif hat.name == "procDef":
             block_name = hat.args.name.replace("%", "").replace(" ", "_")
             args = list(zip(hat.args.args, hat.args.defaults))
