@@ -1,5 +1,5 @@
 # coro-scratch
-A Scratch 2.0 to Python transpiler that makes extensive use of coroutines
+A MIT Scratch 2.0 to Python transpiler that makes extensive use of coroutines
 
 coro-scratch is a simple command line tool that can convert Scratch projects to .py source files that can be run in any Python version greater than or equal to 3.8. It makes extensive use of asyncio and coroutines in the transpiled files.
 
