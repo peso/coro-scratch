@@ -83,20 +83,25 @@ end
 
 
 
+(answer)
 
 
 define custom block (a) (b)
+# Operators
 
-(answer)
 () + ()
 () - ()
 () * ()
 () / ()
-join [] []
-[] = []
-<> or <>
-<> and <>
-not <>
-() > ()
+
 () < ()
+[] = []
+() > ()
+
+<> and <>
+<> or <>
+not <>
+
+join [] []
+
 () mod ()
