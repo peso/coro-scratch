@@ -18,6 +18,17 @@ stop all sounds
 ask [] and wait
 
 
+# Data
+
+## Variables
+
+(var)
+
+set [var v] to []
+
+change [var v] by ()
+
+
 # Events
 
 when gf clicked
@@ -48,12 +59,9 @@ end
 
 wait until <>
 
-set [var v] to []
 repeat until <>
 end
 
-change [var v] by ()
-(var)
 
 add [] to [list v]
 
