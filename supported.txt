@@ -28,6 +28,24 @@ set [var v] to []
 
 change [var v] by ()
 
+## Lists
+
+(list ::list)
+
+add [] to [list v]
+
+delete (1 v) of [list v]
+
+insert [] at (1 v) of [list v]
+
+replace item (1 v) of [list v] with []
+
+(item (1 v) of [list v])
+
+(length of [list v])
+
+<[list v] contains []>
+
 
 # Events
 
@@ -63,18 +81,7 @@ repeat until <>
 end
 
 
-add [] to [list v]
 
-delete (1 v) of [list v]
-
-insert [] at (1 v) of [list v]
-
-replace item (1 v) of [list v] with []
-
-(list ::list)
-<[list v] contains []>
-(item (1 v) of [list v])
-(length of [list v])
 
 
 
