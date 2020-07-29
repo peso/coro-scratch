@@ -15,7 +15,6 @@ play sound [sound v]
 stop all sounds
 
 
-ask [] and wait
 
 
 # Data
@@ -81,7 +80,9 @@ repeat until <>
 end
 
 
+# Sensing
 
+ask [] and wait
 
 (answer)
 
