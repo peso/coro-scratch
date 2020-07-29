@@ -29,23 +29,28 @@ when I receive [event v]
 broadcast [event v]
 
 
+# Control
+
 wait () secs
 
 forever
-
 end
 
 repeat ()
-
 end
 
-repeat until <>
+if <> then
+end
 
+if <> then
+else
 end
 
 wait until <>
 
 set [var v] to []
+repeat until <>
+end
 
 change [var v] by ()
 (var)
@@ -63,12 +68,7 @@ replace item (1 v) of [list v] with []
 (item (1 v) of [list v])
 (length of [list v])
 
-if <> then
-end
 
-if <> then
-else
-end
 
 define custom block (a) (b)
 
